@@ -1,0 +1,87 @@
+############################################
+# OS / Editor junk
+############################################
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*.tmp
+*.bak
+
+############################################
+# Visual Studio
+############################################
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+############################################
+# Visual Studio build outputs
+############################################
+Debug/
+Release/
+x64/
+x86/
+Win32/
+ipch/
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.log
+*.tlog
+*.pch
+*.res
+*.iobj
+*.ipdb
+*.exp
+*.lib
+*.exe
+*.dll
+
+############################################
+# CMake (if used)
+############################################
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+Makefile
+
+############################################
+# JUCE
+############################################
+# Projucer-generated IDE projects
+Builds/
+
+# JUCE module build artifacts
+**/JuceLibraryCode/
+
+############################################
+# Audio / plugin binaries
+############################################
+*.vst3
+*.vst
+*.dll
+*.exe
+*.component
+*.aaxplugin
+
+############################################
+# Test / profiling output
+############################################
+*.prof
+*.trace
+*.coverage
+
+############################################
+# Other
+############################################
+*.zip
+*.7z
+*.rar
