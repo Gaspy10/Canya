@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="tJmNN8" name="JuceSynthPlugin" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="mDIx8V" name="JuceSynthPlugin">
     <GROUP id="{E03966CC-CB49-4BD6-72C6-B2CA2EAD5769}" name="Source">
       <FILE id="I10Bgj" name="FIRfilter.h" compile="0" resource="0" file="Source/FIRfilter.h"/>

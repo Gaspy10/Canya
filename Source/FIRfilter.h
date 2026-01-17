@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include <JuceHeader.h>
 #include <vector>
 #include <cmath>
@@ -6,6 +6,8 @@
 class FIRFilter
 {
 public:
+    FIRFilter() = default;
+
     FIRFilter(int numTaps, double sampleRate)
         : taps(numTaps),
         fs(sampleRate),

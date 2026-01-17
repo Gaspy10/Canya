@@ -4,8 +4,9 @@
 
 using Coeff = juce::dsp::IIR::Coefficients<double>;
 
-WavetableVoice::WavetableVoice(const juce::AudioSampleBuffer& sine, WaveFormSettings& w)
-    : sineTable(sine), waveFormSettings(w), filter{ 101, 48000 } {
+WavetableVoice::WavetableVoice(WaveFormSettings& w)
+    : waveFormSettings(w) {
+
     env.setAttackMS(100);
     env.setDecay(500);
     env.setSustain(0.8);
@@ -67,6 +68,11 @@ double WavetableVoice::amplify(double sample) const
 	return sample * waveFormSettings.getVelocity();
 }
 
+void WavetableVoice::setCurrentPlaybackSampleRate(double newRate)
+{
+    prepare(newRate);
+}
+
 double WavetableVoice::getNextSample()
 {
     auto c = waveFormSettings.getSelectedWaveForm();
@@ -85,4 +91,9 @@ double WavetableVoice::getNextSample()
 			return osc.saw(frequency);
 		}
     }
+}
+
+void WavetableVoice::prepare(int sampleRate)
+{
+	filter = FIRFilter{ 101, static_cast<float>(sampleRate) };
 }

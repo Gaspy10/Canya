@@ -18,7 +18,7 @@
 class WavetableVoice : public juce::SynthesiserVoice
 {
 public:
-    WavetableVoice(const juce::AudioSampleBuffer& sine, WaveFormSettings& w);
+    WavetableVoice(WaveFormSettings& w);
 
     bool canPlaySound(juce::SynthesiserSound* sound) override;
     void startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound*, int currentPitchWheelPosition) override;
@@ -26,6 +26,8 @@ public:
     void pitchWheelMoved(int) override {}
     void controllerMoved(int, int) override {}
     void renderNextBlock(juce::AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override;
+    void setCurrentPlaybackSampleRate(double newRate) override;
+    void prepare(int sampleRate);
 
 private:
     double getNextSample();
@@ -39,8 +41,6 @@ private:
     float frequency = 0;
 
     double envValue = 0.0;
-
-    const juce::AudioSampleBuffer& sineTable;
 
     WaveFormSettings& waveFormSettings;
 

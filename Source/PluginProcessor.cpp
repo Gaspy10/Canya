@@ -30,12 +30,11 @@ JuceSynthPluginAudioProcessor::createParameterLayout()
 JuceSynthPluginAudioProcessor::JuceSynthPluginAudioProcessor()
     : AudioProcessor(BusesProperties().withOutput("Output", juce::AudioChannelSet::stereo(), true))
     , apvts(*this, nullptr, "PARAMS", createParameterLayout())
-    , sineTable(createSineTable())
     , waveFormSettings(apvts) // <-- you must implement this ctor (see note below)
 {
     // Ported from SynthAudioSource constructor:
     for (int i = 0; i < 4; ++i)
-        synth.addVoice(new WavetableVoice(sineTable, waveFormSettings));
+        synth.addVoice(new WavetableVoice(waveFormSettings));
 
     synth.addSound(new WavetableSound());
 }
@@ -64,7 +63,9 @@ void JuceSynthPluginAudioProcessor::prepareToPlay(double sampleRate, int samples
     maxiSettings::setup(sampleRate, 2, 1024);
 
     // If your voices/filters need reset, do it here (safe, not realtime).
-    juce::ignoreUnused(samplesPerBlock);
+    for (int i = 0; i < synth.getNumVoices(); ++i)
+        if (auto* v = dynamic_cast<WavetableVoice*>(synth.getVoice(i)))
+            v->prepare(sampleRate);
 }
 
 //==============================================================================
@@ -112,19 +113,6 @@ void JuceSynthPluginAudioProcessor::setStateInformation(const void* data, int si
 juce::AudioProcessorEditor* JuceSynthPluginAudioProcessor::createEditor()
 {
     return new PluginEditor(*this);
-}
-
-//==============================================================================
-juce::AudioSampleBuffer JuceSynthPluginAudioProcessor::createSineTable(int tableSize)
-{
-    juce::AudioSampleBuffer buffer(1, tableSize);
-    auto* samples = buffer.getWritePointer(0);
-
-    for (int i = 0; i < tableSize; ++i)
-        samples[i] = std::sin(2.0 * juce::MathConstants<double>::pi
-            * (double)i / (double)tableSize);
-
-    return buffer;
 }
 
 

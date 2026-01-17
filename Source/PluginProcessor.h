@@ -56,7 +56,5 @@ private:
     // IMPORTANT: This must be processor-owned and NOT depend on GUI widgets.
     WaveFormSettings waveFormSettings;
 
-    juce::AudioSampleBuffer createSineTable(int tableSize = 1024);
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JuceSynthPluginAudioProcessor)
 };
