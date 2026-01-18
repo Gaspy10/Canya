@@ -31,7 +31,7 @@ PluginEditor::PluginEditor (JuceSynthPluginAudioProcessor& p)
     cutoffHighSlider.setRange (20.0, 20000.0);
 
 	attackSlider.setRange(0, 5000.0);
-	sustainSlider.setRange(0.0, 1.0);
+	sustainSlider.setRange(0.1, 1.0);
 	decaySlider.setRange(0, 5000.0);
 	releaseSlider.setRange(0, 5000.0);
 

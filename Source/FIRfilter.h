@@ -12,19 +12,30 @@ public:
         : taps(numTaps),
         fs(sampleRate),
         buffer(numTaps, 0.0f),
-        coeffs(numTaps, 0.0f)
+        coeffs(numTaps, 0.0f),
+		coeffsHighPass(numTaps, 0.0f)
     {
         jassert(numTaps >= 3);
-        setCutoff(1000.0f); // default until user sets
+		tempBufferA.resize(numTaps, 0.0f);
+		tempBufferB.resize(numTaps, 0.0f);
+        setCutoff(cutoffLow, cutoffHigh); // default until user sets
     }
 
     // ============================================================
     //      Change cutoff frequency dynamically
     // ============================================================
-    void setCutoff(float cutoffHz)
+    void setCutoff(float cutoffHzLow, float cutoffHzHigh)
     {
-        cutoff = cutoffHz;
-        generateCoefficients(cutoffHz);
+        cutoffLow = cutoffHzLow;
+		cutoffHigh = cutoffHzHigh;
+
+		generateCoefficients(cutoffHzLow, tempBufferA);
+		generateCoefficients(cutoffHzHigh, tempBufferB);
+
+        for (int n = 0; n < taps; n++)
+        {
+			coeffs[n] = tempBufferB[n] - tempBufferA[n];
+        }
     }
 
     // ============================================================
@@ -37,7 +48,7 @@ public:
         float y = 0.0f;
         int bufIdx = index;
 
-        // Manual circular buffer convolution
+        // low-pass
         for (int i = 0; i < taps; i++)
         {
             y += coeffs[i] * buffer[bufIdx];
@@ -68,16 +79,22 @@ public:
 private:
     int taps;
     double fs;
-    float cutoff = 1000.0f;
+    float cutoffLow = 20000.0f;
+	float cutoffHigh = 20.0f;
 
     std::vector<float> coeffs;
+	std::vector<float> coeffsHighPass;
     std::vector<float> buffer;
+
+	std::vector<float> tempBufferA;
+    std::vector<float> tempBufferB;
+
     int index = 0;
 
     // ============================================================
     //      Recompute coefficients using Hamming-windowed sinc
     // ============================================================
-    void generateCoefficients(float cutoffHz)
+    void generateCoefficients(float cutoffHz, std::vector<float> & c)
     {
         const float fc = cutoffHz / fs;  // normalized 0..0.5
         const int M = taps - 1;
@@ -95,7 +112,7 @@ private:
             // Hamming window
             float w = 0.54f - 0.46f * std::cos(2.0f * juce::MathConstants<float>::pi * n / M);
 
-            coeffs[n] = sinc * w;
+            c[n] = sinc * w;
         }
     }
 };

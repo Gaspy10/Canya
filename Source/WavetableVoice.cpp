@@ -17,10 +17,9 @@ void WavetableVoice::startNote(int midiNoteNumber, float velocity,
 {
     frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
     level = velocity * 0.15;
-    filter.setCutoff(waveFormSettings.getCutoffLowFrequency());
+    filter.setCutoff(waveFormSettings.getCutoffLowFrequency(), waveFormSettings.getCutoffHighFrequency());
 
     env.setAttackMS(waveFormSettings.getAttackValue());
-	float a = waveFormSettings.getAttackValue();
     env.setDecay(waveFormSettings.getDecayValue());
     env.setSustain(waveFormSettings.getSustainValue());
     env.setRelease(waveFormSettings.getReleaseValue());
@@ -47,8 +46,6 @@ void WavetableVoice::renderNextBlock(juce::AudioSampleBuffer& outputBuffer,
     {
         envValue = env.adsr(1.0, env.trigger);
 
-		double cutoffLow = waveFormSettings.getCutoffLowFrequency();
-		double cutoffHigh = waveFormSettings.getCutoffHighFrequency();
         double sample = filter.processSample(getNextSample());
         sample = amplify(sample * level * envValue);
 

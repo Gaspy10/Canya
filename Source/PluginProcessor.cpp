@@ -36,7 +36,7 @@ JuceSynthPluginAudioProcessor::createParameterLayout()
 
     layout.add(std::make_unique<APF>(
         "sustain", "Sustain",
-        juce::NormalisableRange<float>(0.0f, 1.0f),
+        juce::NormalisableRange<float>(0.001f, 1.0f),
         0.8f));
 
     layout.add(std::make_unique<APF>(
