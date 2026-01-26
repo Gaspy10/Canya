@@ -57,7 +57,7 @@ Makefile
 # JUCE
 ############################################
 # Projucer-generated IDE projects
-Builds/
+Builds/VisualStudio2022
 
 # JUCE module build artifacts
 **/JuceLibraryCode/
